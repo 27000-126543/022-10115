@@ -6,8 +6,8 @@ export function formatDate(date: string | Date): string {
   return `${year}-${month}-${day}`;
 }
 
-export function getToday(): string {
-  return formatDate(new Date());
+export function getToday(date: string | Date = new Date()): string {
+  return formatDate(date);
 }
 
 export function getWeekday(date: string | Date = new Date()): string {

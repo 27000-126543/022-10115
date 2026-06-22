@@ -14,13 +14,14 @@ const typeLabels: Record<string, { name: string; icon: string }> = {
 };
 
 export default function ComplaintPage() {
-  const { addScore } = useApp();
+  const { addScore, completeTaskByType } = useApp();
   const [activeType, setActiveType] = useState<string>('all');
   const [currentSceneIdx, setCurrentSceneIdx] = useState(0);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
   const [showFeedback, setShowFeedback] = useState(false);
   const [completedIds, setCompletedIds] = useState<string[]>([]);
   const [score, setScore] = useState(0);
+  const [taskMarked, setTaskMarked] = useState(false);
 
   const filteredScenes = useMemo(() => {
     if (activeType === 'all') return complaintScenes;
@@ -53,6 +54,10 @@ export default function ComplaintPage() {
     }
     if (!completedIds.includes(currentScene.id)) {
       setCompletedIds(prev => [...prev, currentScene.id]);
+    }
+    if (!taskMarked) {
+      completeTaskByType('complaint');
+      setTaskMarked(true);
     }
   };
 

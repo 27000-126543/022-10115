@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { View, Text } from '@tarojs/components';
+import React, { useState, useMemo } from 'react';
+import { View, Text, Input } from '@tarojs/components';
+import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import type { Question } from '@/types';
@@ -8,19 +9,46 @@ interface QuestionCardProps {
   data: Question;
   index?: number;
   showAnswer?: boolean;
-  onSubmit?: (answer: string | string[]) => void;
+  onSubmit?: (answer: string | string[], isCorrect: boolean) => void;
 }
 
 export default function QuestionCard({ data, index, showAnswer = true, onSubmit }: QuestionCardProps) {
   const [selected, setSelected] = useState<string[]>([]);
   const [submitted, setSubmitted] = useState(false);
-  const [fillAnswer, setFillAnswer] = useState('');
+  const [fillInputs, setFillInputs] = useState<string[]>([]);
+  const [activeFillIdx, setActiveFillIdx] = useState<number | null>(null);
+  const [inputValue, setInputValue] = useState('');
+
+  const blankCount = useMemo(() => {
+    if (data.type !== 'fill') return 0;
+    return Array.isArray(data.correctAnswer) ? data.correctAnswer.length : 1;
+  }, [data.type, data.correctAnswer]);
+
+  const initFillInputs = () => {
+    if (fillInputs.length === 0 && blankCount > 0) {
+      setFillInputs(new Array(blankCount).fill(''));
+    }
+  };
+
+  React.useEffect(() => {
+    initFillInputs();
+  }, [blankCount]);
 
   const isCorrect = (key: string) => {
     if (Array.isArray(data.correctAnswer)) {
       return data.correctAnswer.includes(key);
     }
     return data.correctAnswer === key;
+  };
+
+  const checkFillCorrect = (userAnswers: string[]): boolean => {
+    if (!Array.isArray(data.correctAnswer)) {
+      return userAnswers[0]?.trim() === String(data.correctAnswer).trim();
+    }
+    if (userAnswers.length !== data.correctAnswer.length) return false;
+    return userAnswers.every((ans, idx) =>
+      ans.trim() === String(data.correctAnswer[idx]).trim()
+    );
   };
 
   const handleOptionClick = (key: string) => {
@@ -32,19 +60,64 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
       );
     } else {
       setSelected([key]);
-      setTimeout(() => submitAnswer([key]), 300);
+      const correct = isCorrect(key);
+      setTimeout(() => {
+        setSubmitted(true);
+        onSubmit?.(key, correct);
+      }, 300);
     }
   };
 
   const handleJudge = (val: 'true' | 'false') => {
     if (submitted) return;
     setSelected([val]);
-    setTimeout(() => submitAnswer([val]), 300);
+    const correct = isCorrect(val);
+    setTimeout(() => {
+      setSubmitted(true);
+      onSubmit?.(val, correct);
+    }, 300);
   };
 
-  const submitAnswer = (answer: string[]) => {
+  const submitMultiple = () => {
+    if (submitted || selected.length === 0) return;
+    const correct = selected.every(k => isCorrect(k)) &&
+      selected.length === (Array.isArray(data.correctAnswer) ? data.correctAnswer.length : 1);
     setSubmitted(true);
-    onSubmit?.(data.type === 'multiple' ? answer : answer[0]);
+    onSubmit?.(selected, correct);
+  };
+
+  const handleFillClick = (idx: number) => {
+    if (submitted) return;
+    setActiveFillIdx(idx);
+    setInputValue(fillInputs[idx] || '');
+    Taro.showActionSheet({
+      itemList: ['确认修改'],
+      success: () => {
+      }
+    });
+  };
+
+  const handleFillInput = (e: any) => {
+    setInputValue(e.detail.value);
+  };
+
+  const handleFillConfirm = (idx: number) => {
+    const newInputs = [...fillInputs];
+    newInputs[idx] = inputValue;
+    setFillInputs(newInputs);
+    setActiveFillIdx(null);
+    setInputValue('');
+  };
+
+  const submitFill = () => {
+    if (submitted) return;
+    if (fillInputs.some(v => !v.trim())) {
+      Taro.showToast({ title: '请填写所有空格', icon: 'none' });
+      return;
+    }
+    const correct = checkFillCorrect(fillInputs);
+    setSubmitted(true);
+    onSubmit?.(fillInputs, correct);
   };
 
   const getOptionClass = (key: string) => {
@@ -54,6 +127,62 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
     if (isCorrect(key)) return styles.correct;
     if (selected.includes(key) && !isCorrect(key)) return styles.wrong;
     return '';
+  };
+
+  const getFillInputClass = (idx: number) => {
+    if (!submitted) {
+      return activeFillIdx === idx ? styles.fillInputActive : '';
+    }
+    const correctAns = Array.isArray(data.correctAnswer) ? data.correctAnswer[idx] : data.correctAnswer;
+    if (fillInputs[idx]?.trim() === String(correctAns).trim()) {
+      return styles.fillCorrect;
+    }
+    return styles.fillWrong;
+  };
+
+  const renderFillTitle = () => {
+    if (data.type !== 'fill') {
+      return <Text className={styles.title}>{data.title}</Text>;
+    }
+    const parts = data.title.split('__');
+    return (
+      <View className={styles.fillTitleRow}>
+        {parts.map((part, idx) => (
+          <React.Fragment key={idx}>
+            <Text className={styles.title}>{part}</Text>
+            {idx < parts.length - 1 && idx < blankCount && (
+              <View
+                className={classnames(
+                  styles.fillBlank,
+                  getFillInputClass(idx),
+                  !submitted && styles.fillBlankClickable
+                )}
+                onClick={() => handleFillClick(idx)}
+              >
+                {submitted ? (
+                  <>
+                    <Text className={styles.fillUserAns}>{fillInputs[idx] || '?'}</Text>
+                    {fillInputs[idx]?.trim() !== String(
+                      Array.isArray(data.correctAnswer) ? data.correctAnswer[idx] : data.correctAnswer
+                    ).trim() && (
+                      <Text className={styles.fillCorrectAns}>
+                        (正确:{Array.isArray(data.correctAnswer) ? data.correctAnswer[idx] : data.correctAnswer})
+                      </Text>
+                    )}
+                  </>
+                ) : (
+                  fillInputs[idx] ? (
+                    <Text className={styles.fillUserAns}>{fillInputs[idx]}</Text>
+                  ) : (
+                    <Text className={styles.fillPlaceholder}>第{idx + 1}空</Text>
+                  )
+                )}
+              </View>
+            )}
+          </React.Fragment>
+        ))}
+      </View>
+    );
   };
 
   return (
@@ -67,7 +196,8 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
           {'★'.repeat(data.difficulty)}{'☆'.repeat(3 - data.difficulty)}
         </View>
       </View>
-      <Text className={styles.title}>{data.title}</Text>
+
+      {renderFillTitle()}
 
       {data.type === 'judge' && (
         <View className={styles.judgeRow}>
@@ -87,17 +217,34 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
       )}
 
       {data.type === 'fill' && (
-        <View className={styles.fillArea}>
-          <View className={styles.fillInput}>
-            {fillAnswer || '点击输入答案...'}
-          </View>
+        <>
+          {activeFillIdx !== null && !submitted && (
+            <View className={styles.fillInputPanel}>
+              <Text className={styles.fillInputLabel}>请填写第 {activeFillIdx + 1} 空的答案：</Text>
+              <View className={styles.fillInputRow}>
+                <Input
+                  className={styles.fillNativeInput}
+                  value={inputValue}
+                  onInput={handleFillInput}
+                  placeholder="请输入答案"
+                  confirmType="done"
+                />
+                <View
+                  className={classnames(styles.smallBtn, styles.smallBtnPrimary)}
+                  onClick={() => handleFillConfirm(activeFillIdx)}
+                >
+                  确认
+                </View>
+              </View>
+            </View>
+          )}
           <View
-            className={classnames(styles.submitBtn, !submitted && styles.active)}
-            onClick={() => fillAnswer && submitAnswer([fillAnswer])}
+            className={classnames(styles.submitBtn, fillInputs.every(v => v.trim()) && !submitted && styles.active)}
+            onClick={submitFill}
           >
-            提交
+            提交答案
           </View>
-        </View>
+        </>
       )}
 
       {(data.type === 'single' || data.type === 'multiple') && data.options && (
@@ -115,7 +262,7 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
           {data.type === 'multiple' && !submitted && (
             <View
               className={classnames(styles.submitBtn, selected.length > 0 && styles.active)}
-              onClick={() => selected.length > 0 && submitAnswer(selected)}
+              onClick={submitMultiple}
             >
               提交答案
             </View>
@@ -125,7 +272,16 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
 
       {submitted && showAnswer && (
         <View className={styles.explanation}>
-          <View className={styles.expTitle}>📖 题目解析</View>
+          <View className={styles.expTitle}>
+            {data.type === 'fill'
+              ? (checkFillCorrect(fillInputs) ? '✅ 回答正确' : '❌ 回答错误')
+              : (
+                data.type === 'multiple'
+                  ? (selected.every(k => isCorrect(k)) && selected.length === (Array.isArray(data.correctAnswer) ? data.correctAnswer.length : 1) ? '✅ 回答正确' : '❌ 回答错误')
+                  : (isCorrect(selected[0]) ? '✅ 回答正确' : '❌ 回答错误')
+              )
+            }　📖 题目解析
+          </View>
           <Text className={styles.expContent}>{data.explanation}</Text>
         </View>
       )}

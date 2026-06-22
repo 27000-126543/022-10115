@@ -1,18 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { View, Text, Image, ScrollView } from '@tarojs/components';
 import Taro from '@tarojs/taro';
 import styles from './index.module.scss';
 import classnames from 'classnames';
 import { useApp } from '@/store/AppContext';
 import { todayKnowledge, badges } from '@/data/tasks';
-import { getWeekday, getToday } from '@/utils';
+import { getWeekday } from '@/utils';
 import KnowledgeCard from '@/components/KnowledgeCard';
 import TaskCard from '@/components/TaskCard';
 import BadgeIcon from '@/components/BadgeIcon';
 
 export default function TasksPage() {
-  const { user, tasks, totalScore, completeTask, addScore } = useApp();
-  const [checkedIn, setCheckedIn] = useState(false);
+  const { user, tasks, totalScore, checkedIn, checkIn, completeTask, completeTaskByType } = useApp();
   const weekDays = ['一', '二', '三', '四', '五', '六', '日'];
   const todayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1;
 
@@ -20,12 +19,13 @@ export default function TasksPage() {
 
   const handleCheckin = () => {
     if (checkedIn) return;
-    setCheckedIn(true);
-    addScore(10);
-    Taro.showToast({
-      title: '签到成功 +10积分',
-      icon: 'success'
-    });
+    const points = checkIn();
+    if (points > 0) {
+      Taro.showToast({
+        title: `签到成功 +${points}积分`,
+        icon: 'success'
+      });
+    }
   };
 
   const handleKnowledgeRead = () => {
@@ -45,7 +45,7 @@ export default function TasksPage() {
     } else if (task.type === 'complaint') {
       Taro.navigateTo({ url: '/pages/complaint/index' });
     } else {
-      completeTask(task.id, task.points);
+      completeTaskByType(task.type);
       Taro.showToast({
         title: `任务完成 +${task.points}积分`,
         icon: 'success'

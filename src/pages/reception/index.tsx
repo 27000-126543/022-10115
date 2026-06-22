@@ -7,7 +7,7 @@ import { receptionScenes } from '@/data/questions';
 import { useApp } from '@/store/AppContext';
 
 export default function ReceptionPage() {
-  const { addScore } = useApp();
+  const { addScore, completeTaskByType } = useApp();
   const [currentScene] = useState(receptionScenes[0]);
   const [currentStep, setCurrentStep] = useState(0);
   const [selectedKey, setSelectedKey] = useState<string | null>(null);
@@ -15,6 +15,7 @@ export default function ReceptionPage() {
   const [totalScore, setTotalScore] = useState(0);
   const [finished, setFinished] = useState(false);
   const [stepScores, setStepScores] = useState<number[]>([]);
+  const [taskMarked, setTaskMarked] = useState(false);
 
   const step = currentScene.steps[currentStep];
   const progress = ((currentStep + (showFeedback ? 1 : 0)) / currentScene.steps.length) * 100;
@@ -38,6 +39,10 @@ export default function ReceptionPage() {
     } else {
       setFinished(true);
       addScore(totalScore);
+      if (!taskMarked) {
+        completeTaskByType('reception');
+        setTaskMarked(true);
+      }
       Taro.showToast({
         title: `完成！获得${totalScore}积分`,
         icon: 'success'

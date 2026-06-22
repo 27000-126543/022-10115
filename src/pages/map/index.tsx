@@ -10,6 +10,13 @@ import LevelNode from '@/components/LevelNode';
 import ProgressBar from '@/components/ProgressBar';
 import QuestionCard from '@/components/QuestionCard';
 
+const categoryIdToName: Record<string, string> = {
+  service: '服务流程',
+  booking: '预约规则',
+  complaint: '投诉应对',
+  privacy: '隐私保护'
+};
+
 export default function MapPage() {
   const { user, addScore } = useApp();
   const [activeCategory, setActiveCategory] = useState('all');
@@ -17,8 +24,21 @@ export default function MapPage() {
 
   const filteredLevels = useMemo(() => {
     if (activeCategory === 'all') return levels;
-    return levels;
+    const categoryName = categoryIdToName[activeCategory];
+    if (!categoryName) return levels;
+    return levels.filter(l => l.category === categoryName);
   }, [activeCategory]);
+
+  const selectedLevelData = useMemo(() => {
+    if (!selectedLevel) return null;
+    return levels.find(l => l.id === selectedLevel) || null;
+  }, [selectedLevel]);
+
+  const levelQuestions = useMemo(() => {
+    if (!selectedLevelData) return [];
+    const matched = questions.filter(q => q.category === selectedLevelData.category);
+    return matched.length > 0 ? matched : questions.slice(0, 3);
+  }, [selectedLevelData]);
 
   const completedCount = levels.filter(l => l.completed).length;
   const totalReward = levels.filter(l => l.completed).reduce((s, l) => s + l.rewardPoints, 0);
@@ -33,9 +53,13 @@ export default function MapPage() {
     setSelectedLevel(levelId);
   };
 
-  const handleQuestionSubmit = (answer: string | string[]) => {
-    Taro.showToast({ title: '答题成功 +10积分', icon: 'success' });
-    addScore(10);
+  const handleQuestionSubmit = (_answer: string | string[], isCorrect: boolean) => {
+    if (isCorrect) {
+      Taro.showToast({ title: '答题成功 +10积分', icon: 'success' });
+      addScore(10);
+    } else {
+      Taro.showToast({ title: '再想想哦', icon: 'none' });
+    }
   };
 
   return (
@@ -103,12 +127,12 @@ export default function MapPage() {
         </View>
       </View>
 
-      {selectedLevel && (
+      {selectedLevel && selectedLevelData && (
         <View style={{ padding: '0 32rpx' }}>
           <Text style={{ fontSize: '32rpx', fontWeight: 600, marginBottom: '24rpx', display: 'block' }}>
-            📝 示例题目（{levels.find(l => l.id === selectedLevel)?.name}）
+            📝 {selectedLevelData.name} · 分类：{selectedLevelData.category}
           </Text>
-          {questions.slice(0, 3).map((q, i) => (
+          {levelQuestions.map((q, i) => (
             <QuestionCard
               key={q.id}
               data={q}
