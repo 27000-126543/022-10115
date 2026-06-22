@@ -90,11 +90,6 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
     if (submitted) return;
     setActiveFillIdx(idx);
     setInputValue(fillInputs[idx] || '');
-    Taro.showActionSheet({
-      itemList: ['确认修改'],
-      success: () => {
-      }
-    });
   };
 
   const handleFillInput = (e: any) => {
@@ -102,11 +97,18 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
   };
 
   const handleFillConfirm = (idx: number) => {
+    if (!inputValue.trim()) return;
     const newInputs = [...fillInputs];
-    newInputs[idx] = inputValue;
+    newInputs[idx] = inputValue.trim();
     setFillInputs(newInputs);
     setActiveFillIdx(null);
     setInputValue('');
+  };
+
+  const handleFillBlur = () => {
+    if (activeFillIdx !== null && inputValue.trim()) {
+      handleFillConfirm(activeFillIdx);
+    }
   };
 
   const submitFill = () => {
@@ -218,24 +220,32 @@ export default function QuestionCard({ data, index, showAnswer = true, onSubmit 
 
       {data.type === 'fill' && (
         <>
-          {activeFillIdx !== null && !submitted && (
+          {!submitted && (
             <View className={styles.fillInputPanel}>
-              <Text className={styles.fillInputLabel}>请填写第 {activeFillIdx + 1} 空的答案：</Text>
-              <View className={styles.fillInputRow}>
-                <Input
-                  className={styles.fillNativeInput}
-                  value={inputValue}
-                  onInput={handleFillInput}
-                  placeholder="请输入答案"
-                  confirmType="done"
-                />
-                <View
-                  className={classnames(styles.smallBtn, styles.smallBtnPrimary)}
-                  onClick={() => handleFillConfirm(activeFillIdx)}
-                >
-                  确认
-                </View>
-              </View>
+              {activeFillIdx !== null ? (
+                <>
+                  <Text className={styles.fillInputLabel}>请填写第 {activeFillIdx + 1} 空的答案：</Text>
+                  <View className={styles.fillInputRow}>
+                    <Input
+                      className={styles.fillNativeInput}
+                      value={inputValue}
+                      onInput={handleFillInput}
+                      onBlur={handleFillBlur}
+                      placeholder="请输入答案"
+                      confirmType="done"
+                      focus
+                    />
+                    <View
+                      className={classnames(styles.smallBtn, styles.smallBtnPrimary)}
+                      onClick={() => handleFillConfirm(activeFillIdx)}
+                    >
+                      确认
+                    </View>
+                  </View>
+                </>
+              ) : (
+                <Text className={styles.fillHint}>👆 点击上方空白处填写答案</Text>
+              )}
             </View>
           )}
           <View

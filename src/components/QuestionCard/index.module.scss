@@ -129,6 +129,15 @@
   border-radius: $radius-md;
   padding: $spacing-md;
   margin-bottom: $spacing-md;
+  min-height: 40rpx;
+}
+
+.fillHint {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  text-align: center;
+  display: block;
+  padding: $spacing-xs 0;
 }
 
 .fillInputLabel {

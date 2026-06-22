@@ -1,4 +1,9 @@
 import type { Level } from '@/types';
+import { questions } from '@/data/questions';
+
+function countByCategory(category: string): number {
+  return questions.filter(q => q.category === category).length;
+}
 
 export const levels: Level[] = [
   {
@@ -7,9 +12,9 @@ export const levels: Level[] = [
     category: '服务流程',
     icon: '🚪',
     unlocked: true,
-    completed: true,
-    progress: 100,
-    totalQuestions: 5,
+    completed: false,
+    progress: 0,
+    totalQuestions: countByCategory('服务流程'),
     rewardPoints: 50,
     position: { row: 0, col: 1 }
   },
@@ -19,9 +24,9 @@ export const levels: Level[] = [
     category: '预约规则',
     icon: '📅',
     unlocked: true,
-    completed: true,
-    progress: 100,
-    totalQuestions: 6,
+    completed: false,
+    progress: 0,
+    totalQuestions: countByCategory('预约规则'),
     rewardPoints: 60,
     position: { row: 1, col: 0 }
   },
@@ -32,8 +37,8 @@ export const levels: Level[] = [
     icon: '🔒',
     unlocked: true,
     completed: false,
-    progress: 60,
-    totalQuestions: 5,
+    progress: 0,
+    totalQuestions: countByCategory('隐私保护'),
     rewardPoints: 80,
     position: { row: 1, col: 2 }
   },
@@ -44,8 +49,8 @@ export const levels: Level[] = [
     icon: '💬',
     unlocked: true,
     completed: false,
-    progress: 20,
-    totalQuestions: 8,
+    progress: 0,
+    totalQuestions: countByCategory('投诉应对'),
     rewardPoints: 100,
     position: { row: 2, col: 1 }
   },
@@ -57,7 +62,7 @@ export const levels: Level[] = [
     unlocked: true,
     completed: false,
     progress: 0,
-    totalQuestions: 6,
+    totalQuestions: countByCategory('术后回访'),
     rewardPoints: 80,
     position: { row: 3, col: 0 }
   },
@@ -66,10 +71,10 @@ export const levels: Level[] = [
     name: '院内活地图',
     category: '院内动线',
     icon: '🗺️',
-    unlocked: false,
+    unlocked: true,
     completed: false,
     progress: 0,
-    totalQuestions: 5,
+    totalQuestions: countByCategory('院内动线'),
     rewardPoints: 60,
     position: { row: 3, col: 2 }
   },
@@ -78,10 +83,10 @@ export const levels: Level[] = [
     name: '服务禁语大师',
     category: '服务规范',
     icon: '🚫',
-    unlocked: false,
+    unlocked: true,
     completed: false,
     progress: 0,
-    totalQuestions: 8,
+    totalQuestions: countByCategory('服务规范'),
     rewardPoints: 100,
     position: { row: 4, col: 1 }
   },
@@ -93,7 +98,7 @@ export const levels: Level[] = [
     unlocked: false,
     completed: false,
     progress: 0,
-    totalQuestions: 10,
+    totalQuestions: countByCategory('投诉应对'),
     rewardPoints: 150,
     position: { row: 5, col: 0 }
   },
@@ -105,7 +110,7 @@ export const levels: Level[] = [
     unlocked: false,
     completed: false,
     progress: 0,
-    totalQuestions: 15,
+    totalQuestions: Math.min(15, questions.length),
     rewardPoints: 300,
     position: { row: 5, col: 2 }
   }

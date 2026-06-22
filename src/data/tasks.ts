@@ -22,7 +22,7 @@ export const dailyTasks: DailyTask[] = [
     description: '3分钟掌握到院接待标准流程',
     icon: '📚',
     points: 20,
-    completed: true,
+    completed: false,
     timeCost: 3
   },
   {

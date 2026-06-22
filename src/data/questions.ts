@@ -132,6 +132,408 @@ export const questions: Question[] = [
     ],
     correctAnswer: ['A', 'B', 'D'],
     explanation: '爽约指未提前48小时告知且未到院的情况。提前2小时虽不合规但属告知行为，按改期处理。'
+  },
+  {
+    id: 'q011',
+    type: 'single',
+    category: '预约规则',
+    difficulty: 1,
+    title: '顾客预约时需要提供哪些必要信息？',
+    options: [
+      { key: 'A', text: '只需要姓名' },
+      { key: 'B', text: '姓名+手机号' },
+      { key: 'C', text: '姓名+手机号+项目意向' },
+      { key: 'D', text: '随便填一个名字就行' }
+    ],
+    correctAnswer: 'C',
+    explanation: '预约必须三要素：姓名核实身份、手机号用于回访确认、项目意向用于安排对应咨询师。'
+  },
+  {
+    id: 'q012',
+    type: 'single',
+    category: '预约规则',
+    difficulty: 2,
+    title: '预约当天顾客临时要求更换项目，应该如何处理？',
+    options: [
+      { key: 'A', text: '直接帮顾客改，反正都是我们的项目' },
+      { key: 'B', text: '告知顾客需要重新预约，原项目已安排对应医生' },
+      { key: 'C', text: '拒绝顾客，预约了就不能改' },
+      { key: 'D', text: '让顾客自己跟医生说' }
+    ],
+    correctAnswer: 'B',
+    explanation: '更换项目可能涉及不同医生和手术室，应引导重新预约以确保资源匹配和服务质量。'
+  },
+  {
+    id: 'q013',
+    type: 'judge',
+    category: '预约规则',
+    difficulty: 1,
+    title: '顾客预约成功后，前台无需再次确认，当天来就行。',
+    correctAnswer: 'false',
+    explanation: '预约成功后需在术前一天电话/微信确认到院时间和注意事项，降低爽约率并体现专业服务。'
+  },
+  {
+    id: 'q014',
+    type: 'single',
+    category: '预约规则',
+    difficulty: 2,
+    title: '新客首次预约到院，以下哪项是必须提前做的准备？',
+    options: [
+      { key: 'A', text: '什么都不用准备，来了再说' },
+      { key: 'B', text: '发送到院路线、停车指引和术前注意事项' },
+      { key: 'C', text: '只需要发个地址就行' },
+      { key: 'D', text: '让顾客自己上网查' }
+    ],
+    correctAnswer: 'B',
+    explanation: '新客首次到院容易紧张迷路，提前发送路线+停车+注意事项可大幅提升到院体验和到院率。'
+  },
+  {
+    id: 'q015',
+    type: 'fill',
+    category: '术后回访',
+    difficulty: 2,
+    title: '术后首次回访应在术后__小时内完成，主要确认顾客__情况和用药指导。',
+    correctAnswer: ['24', '恢复'],
+    explanation: '术后24小时内必须完成首次回访，主要确认恢复情况（有无异常出血、肿胀等）并指导用药。'
+  },
+  {
+    id: 'q016',
+    type: 'single',
+    category: '术后回访',
+    difficulty: 2,
+    title: '术后第7天回访的主要目的是什么？',
+    options: [
+      { key: 'A', text: '催顾客来交尾款' },
+      { key: 'B', text: '确认拆线安排和伤口恢复情况' },
+      { key: 'C', text: '推荐新的项目给顾客' },
+      { key: 'D', text: '问问顾客有没有朋友想做' }
+    ],
+    correctAnswer: 'B',
+    explanation: '第7天是拆线时间节点，需确认拆线预约并检查伤口恢复，这是术后关键回访节点。'
+  },
+  {
+    id: 'q017',
+    type: 'judge',
+    category: '术后回访',
+    difficulty: 1,
+    title: '术后回访可以在朋友圈评论区进行，方便又快捷。',
+    correctAnswer: 'false',
+    explanation: '回访必须通过私密渠道（电话/私聊）进行，朋友圈评论会暴露顾客整形隐私，严重违规。'
+  },
+  {
+    id: 'q018',
+    type: 'single',
+    category: '术后回访',
+    difficulty: 3,
+    title: '顾客术后1个月回访时表示效果不满意，前台应如何应对？',
+    options: [
+      { key: 'A', text: '告诉顾客恢复期还没过，再等等看' },
+      { key: 'B', text: '记录诉求并预约医生面诊，安抚情绪' },
+      { key: 'C', text: '直接说手术成功了是顾客自己感觉问题' },
+      { key: 'D', text: '让顾客去其他医院看看' }
+    ],
+    correctAnswer: 'B',
+    explanation: '效果回访中顾客表达不满，应先记录+安抚+安排医生面诊，切忌自行判断或否定顾客感受。'
+  },
+  {
+    id: 'q019',
+    type: 'multiple',
+    category: '术后回访',
+    difficulty: 2,
+    title: '术后回访的标准内容包含以下哪些？',
+    options: [
+      { key: 'A', text: '确认恢复情况和有无异常' },
+      { key: 'B', text: '提醒下次到院时间和注意事项' },
+      { key: 'C', text: '推销其他医美项目' },
+      { key: 'D', text: '询问是否需要帮助预约复查' }
+    ],
+    correctAnswer: ['A', 'B', 'D'],
+    explanation: '回访核心是关心恢复+提醒复诊+提供帮助，推销项目应在回访外的时间以适当方式进行。'
+  },
+  {
+    id: 'q020',
+    type: 'fill',
+    category: '术后回访',
+    difficulty: 3,
+    title: '术后3个月回访重点是评估__效果，如顾客有二次需求可引导至__面诊。',
+    correctAnswer: ['稳定', '修复'],
+    explanation: '3个月后手术效果基本稳定，此时评估最终效果，有修复需求的顾客可引导至修复专项面诊。'
+  },
+  {
+    id: 'q021',
+    type: 'single',
+    category: '服务流程',
+    difficulty: 1,
+    title: '顾客进入大厅后，前台应该第一时间做什么？',
+    options: [
+      { key: 'A', text: '等顾客走到前台再说话' },
+      { key: 'B', text: '主动起身微笑问候' },
+      { key: 'C', text: '先确认预约再打招呼' },
+      { key: 'D', text: '继续处理手头工作' }
+    ],
+    correctAnswer: 'B',
+    explanation: '服务第一原则：先问候再办业务。主动起身微笑是基本礼仪，不能让顾客等待。'
+  },
+  {
+    id: 'q022',
+    type: 'judge',
+    category: '服务流程',
+    difficulty: 1,
+    title: '顾客等待时，前台可以讨论私人话题打发时间。',
+    correctAnswer: 'false',
+    explanation: '工作时间内禁止讨论私人话题，顾客随时可能听到，影响专业形象。'
+  },
+  {
+    id: 'q023',
+    type: 'multiple',
+    category: '服务流程',
+    difficulty: 2,
+    title: '顾客到院登记时需要核验哪些信息？',
+    options: [
+      { key: 'A', text: '姓名与预约记录一致' },
+      { key: 'B', text: '手机号与系统记录匹配' },
+      { key: 'C', text: '随便填个名字就可以' },
+      { key: 'D', text: '确认预约项目和咨询师' }
+    ],
+    correctAnswer: ['A', 'B', 'D'],
+    explanation: '登记必须核实姓名+手机号双要素，同时确认预约项目和咨询师安排，避免出错。'
+  },
+  {
+    id: 'q024',
+    type: 'single',
+    category: '服务流程',
+    difficulty: 3,
+    title: '多位顾客同时到院时，前台应如何处理？',
+    options: [
+      { key: 'A', text: '先到先服务，后面的等着' },
+      { key: 'B', text: '逐一问候并告知预计等待时间，按预约优先排序' },
+      { key: 'C', text: '让所有人排队等' },
+      { key: 'D', text: '先处理看起来更急的' }
+    ],
+    correctAnswer: 'B',
+    explanation: '同时到院应逐一问候安抚，按预约时间优先排序，明确告知等待时间，体现专业管理。'
+  },
+  {
+    id: 'q025',
+    type: 'single',
+    category: '投诉应对',
+    difficulty: 1,
+    title: '顾客情绪激动时，前台首先应该做什么？',
+    options: [
+      { key: 'A', text: '告诉顾客冷静一点' },
+      { key: 'B', text: '倾听并表达理解和歉意' },
+      { key: 'C', text: '叫经理出来处理' },
+      { key: 'D', text: '解释我们的规定' }
+    ],
+    correctAnswer: 'B',
+    explanation: '情绪激动时顾客最需要被倾听和尊重，先安抚情绪再处理问题，切忌说"你冷静点"。'
+  },
+  {
+    id: 'q026',
+    type: 'multiple',
+    category: '投诉应对',
+    difficulty: 2,
+    title: '接待投诉顾客时，以下哪些做法是正确的？',
+    options: [
+      { key: 'A', text: '引导至私密空间沟通，避免影响其他顾客' },
+      { key: 'B', text: '全程记录投诉要点和顾客诉求' },
+      { key: 'C', text: '在大厅直接和顾客争论' },
+      { key: 'D', text: '承诺会在规定时间内给到处理方案' }
+    ],
+    correctAnswer: ['A', 'B', 'D'],
+    explanation: '投诉处理三原则：转移至私密空间、详细记录、承诺时效。公开争论会扩大负面影响。'
+  },
+  {
+    id: 'q027',
+    type: 'judge',
+    category: '投诉应对',
+    difficulty: 1,
+    title: '顾客投诉时可以说"这是医院规定我也没办法"。',
+    correctAnswer: 'false',
+    explanation: '这是服务禁语，推卸责任会让顾客更加愤怒。应说明规则原因并提供替代方案。'
+  },
+  {
+    id: 'q028',
+    type: 'single',
+    category: '投诉应对',
+    difficulty: 3,
+    title: '投诉处理后应该怎么做后续跟进？',
+    options: [
+      { key: 'A', text: '处理完了就不用管了' },
+      { key: 'B', text: '24小时内回访确认满意度，记录改进点' },
+      { key: 'C', text: '等顾客再来时再说' },
+      { key: 'D', text: '让经理去跟进' }
+    ],
+    correctAnswer: 'B',
+    explanation: '投诉闭环关键：24小时内主动回访确认满意度，既是关怀也是预防差评升级。'
+  },
+  {
+    id: 'q029',
+    type: 'multiple',
+    category: '隐私保护',
+    difficulty: 2,
+    title: '以下哪些行为违反了顾客隐私保护规定？',
+    options: [
+      { key: 'A', text: '在工作群里发送顾客手术照片（未打码）' },
+      { key: 'B', text: '用私人手机拍摄顾客档案' },
+      { key: 'C', text: '按流程在系统内查阅顾客预约信息' },
+      { key: 'D', text: '告诉朋友某明星在我们这里做了项目' }
+    ],
+    correctAnswer: ['A', 'B', 'D'],
+    explanation: 'A/B/D都涉及未授权的个人信息外泄。C是正常工作流程，通过系统查阅是合规的。'
+  },
+  {
+    id: 'q030',
+    type: 'single',
+    category: '隐私保护',
+    difficulty: 3,
+    title: '顾客要求查看自己的病历档案，前台应该如何处理？',
+    options: [
+      { key: 'A', text: '拒绝，病历是医院的内部资料' },
+      { key: 'B', text: '告知需按流程申请，由主治医生审核后提供' },
+      { key: 'C', text: '直接把档案给顾客看' },
+      { key: 'D', text: '说系统里查不到' }
+    ],
+    correctAnswer: 'B',
+    explanation: '顾客有权查看自己的医疗档案，但需走正规申请流程，由医生审核确保解读准确。'
+  },
+  {
+    id: 'q031',
+    type: 'judge',
+    category: '隐私保护',
+    difficulty: 2,
+    title: '前台可以将顾客的联系方式推荐给其他科室做营销。',
+    correctAnswer: 'false',
+    explanation: '顾客信息仅限预约和服务用途使用，跨科室营销推送需获得顾客明确授权，否则属于隐私泄露。'
+  },
+  {
+    id: 'q032',
+    type: 'single',
+    category: '隐私保护',
+    difficulty: 2,
+    title: '发现同事在微信群传播顾客信息，你应该怎么做？',
+    options: [
+      { key: 'A', text: '当作没看见，不关自己的事' },
+      { key: 'B', text: '提醒同事删除并向上级报告' },
+      { key: 'C', text: '转发给别人看看' },
+      { key: 'D', text: '截图留证据但不行动' }
+    ],
+    correctAnswer: 'B',
+    explanation: '发现隐私泄露有义务及时制止和上报，不作为也属于失职。提醒删除+上报是标准流程。'
+  },
+  {
+    id: 'q033',
+    type: 'single',
+    category: '院内动线',
+    difficulty: 1,
+    title: '新顾客到院后咨询室在哪里？',
+    options: [
+      { key: 'A', text: '一楼大厅' },
+      { key: 'B', text: '二楼咨询区' },
+      { key: 'C', text: '三楼手术室' },
+      { key: 'D', text: '地下室' }
+    ],
+    correctAnswer: 'B',
+    explanation: '咨询室位于二楼咨询区，环境安静私密，适合顾客与咨询师深入沟通。'
+  },
+  {
+    id: 'q034',
+    type: 'single',
+    category: '院内动线',
+    difficulty: 2,
+    title: '顾客需要做术前抽血检查，应该引导去几楼？',
+    options: [
+      { key: 'A', text: '一楼检验科' },
+      { key: 'B', text: '二楼咨询室' },
+      { key: 'C', text: '三楼换药室' },
+      { key: 'D', text: '四楼手术室' }
+    ],
+    correctAnswer: 'A',
+    explanation: '术前抽血检验在一楼检验科，需空腹的项目要提前告知顾客注意事项。'
+  },
+  {
+    id: 'q035',
+    type: 'multiple',
+    category: '院内动线',
+    difficulty: 2,
+    title: '顾客术后需要去哪些区域？',
+    options: [
+      { key: 'A', text: '三楼换药室拆线' },
+      { key: 'B', text: '一楼缴费处结账' },
+      { key: 'C', text: '二楼咨询室复诊' },
+      { key: 'D', text: '四楼手术室做手术' }
+    ],
+    correctAnswer: ['A', 'B', 'C'],
+    explanation: '术后顾客常规流程：三楼拆线换药、一楼缴费结账、二楼咨询复诊。手术在四楼术前已完成。'
+  },
+  {
+    id: 'q036',
+    type: 'single',
+    category: '院内动线',
+    difficulty: 3,
+    title: 'VIP顾客的专属等候区在哪个位置？',
+    options: [
+      { key: 'A', text: '一楼大厅沙发区' },
+      { key: 'B', text: '二楼VIP专属休息室' },
+      { key: 'C', text: '三楼走廊' },
+      { key: 'D', text: '没有专属区域' }
+    ],
+    correctAnswer: 'B',
+    explanation: '二楼设有VIP专属休息室，配备独立茶点区和私密环境，与普通候诊区隔离。'
+  },
+  {
+    id: 'q037',
+    type: 'single',
+    category: '服务规范',
+    difficulty: 1,
+    title: '顾客说"你们价格太贵了"，以下哪种回应最合适？',
+    options: [
+      { key: 'A', text: '嫌贵别做啊' },
+      { key: 'B', text: '我们的价格匹配我们的技术和安全标准，我来给您详细介绍一下价值所在' },
+      { key: 'C', text: '确实贵，我也觉得贵' },
+      { key: 'D', text: '你去别家看看吧' }
+    ],
+    correctAnswer: 'B',
+    explanation: '面对价格异议应转向价值阐述，说明技术、安全、服务的差异化优势，而非否定或附和。'
+  },
+  {
+    id: 'q038',
+    type: 'judge',
+    category: '服务规范',
+    difficulty: 1,
+    title: '可以跟顾客说"这个项目很简单，完全没风险"。',
+    correctAnswer: 'false',
+    explanation: '任何医疗项目都有风险，过度承诺零风险是违规的。应客观告知风险并说明安全措施。'
+  },
+  {
+    id: 'q039',
+    type: 'multiple',
+    category: '服务规范',
+    difficulty: 2,
+    title: '以下哪些属于服务禁语？',
+    options: [
+      { key: 'A', text: '这个效果我也不确定' },
+      { key: 'B', text: '我们采用XX技术，术后恢复期通常X天' },
+      { key: 'C', text: '便宜的就是这样' },
+      { key: 'D', text: '你以前做得不好' }
+    ],
+    correctAnswer: ['A', 'C', 'D'],
+    explanation: 'A暴露专业度不足，C暗示低价=低质，D否定顾客过往。B是专业客观的回应方式。'
+  },
+  {
+    id: 'q040',
+    type: 'single',
+    category: '服务规范',
+    difficulty: 3,
+    title: '顾客术后表示对效果不满意并威胁投诉，以下哪种做法最恰当？',
+    options: [
+      { key: 'A', text: '告诉顾客手术协议已签字，效果因人而异' },
+      { key: 'B', text: '认真倾听记录诉求，安抚情绪并安排医生面诊评估' },
+      { key: 'C', text: '说投诉也没用，我们没违规' },
+      { key: 'D', text: '立即同意退款或免费修复' }
+    ],
+    correctAnswer: 'B',
+    explanation: '应倾听→安抚→记录→安排专业评估。不过度承诺也不推诿，让医生从专业角度判断。'
   }
 ];
 
