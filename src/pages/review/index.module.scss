@@ -1,0 +1,294 @@
+@use '@/styles/variables.scss' as *;
+
+.statsCard {
+  margin: $spacing-lg $page-padding;
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.statsTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.categoryStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+}
+
+.catItem {
+  flex: 1;
+  min-width: 140rpx;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  text-align: center;
+}
+
+.catNum {
+  font-size: 40rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  line-height: 1.1;
+  display: block;
+}
+
+.catName {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  margin-top: 4rpx;
+}
+
+.section {
+  padding: 0 $page-padding;
+  margin-bottom: $spacing-lg;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.sectionTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.moreBtn {
+  font-size: $font-size-sm;
+  color: $color-primary;
+}
+
+.focusList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.focusCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  border-left: 6rpx solid $color-border;
+
+  &.high { border-left-color: $color-error; }
+  &.medium { border-left-color: $color-warning; }
+  &.low { border-left-color: $color-secondary; }
+}
+
+.focusHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.focusTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  flex: 1;
+  margin-right: $spacing-sm;
+}
+
+.priorityTag {
+  font-size: $font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+  font-weight: $font-weight-medium;
+  flex-shrink: 0;
+
+  &.high { background: $color-error-bg; color: $color-error; }
+  &.medium { background: $color-warning-bg; color: $color-warning; }
+  &.low { background: $color-secondary-bg; color: $color-secondary; }
+}
+
+.focusContent {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.focusMeta {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.wrongList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.wrongCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.wrongHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-sm;
+}
+
+.wrongCategory {
+  background: $color-error-bg;
+  color: $color-error;
+  font-size: $font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+  font-weight: $font-weight-medium;
+}
+
+.wrongCount {
+  background: $color-gold-bg;
+  color: $color-gold;
+  font-size: $font-size-xs;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.wrongTitle {
+  font-size: $font-size-md;
+  font-weight: $font-weight-medium;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.answerRow {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xs;
+}
+
+.answerItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  font-size: $font-size-sm;
+  line-height: $line-height-normal;
+}
+
+.answerLabel {
+  flex-shrink: 0;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.wrongLabel {
+  background: $color-error-bg;
+  color: $color-error;
+}
+
+.correctLabel {
+  background: $color-success-bg;
+  color: $color-success;
+}
+
+.answerText {
+  flex: 1;
+  color: $color-text-secondary;
+}
+
+.wrongTime {
+  margin-top: $spacing-sm;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.meetingList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  position: relative;
+  padding-left: $spacing-lg;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 14rpx;
+    top: 20rpx;
+    bottom: 20rpx;
+    width: 4rpx;
+    background: $color-divider;
+  }
+}
+
+.meetingItem {
+  position: relative;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+}
+
+.meetingDot {
+  position: absolute;
+  left: -46rpx;
+  top: $spacing-lg;
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: $radius-round;
+  background: $color-primary;
+  border: 4rpx solid $color-bg-page;
+}
+
+.meetingDate {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 8rpx;
+}
+
+.meetingTopic {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.meetingPoints {
+  display: flex;
+  flex-direction: column;
+  gap: 8rpx;
+}
+
+.pointItem {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  padding-left: $spacing-md;
+  position: relative;
+
+  &::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: $color-primary;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.contentBottom {
+  height: 48rpx;
+}

@@ -1,0 +1,93 @@
+@use '@/styles/variables.scss' as *;
+
+.item {
+  display: flex;
+  align-items: center;
+  padding: $spacing-md $spacing-lg;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  margin-bottom: $spacing-sm;
+  gap: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.995);
+  }
+}
+
+.isMe {
+  background: linear-gradient(135deg, $color-primary-bg 0%, #FFFFFF 100%);
+  border: 2rpx solid $color-primary;
+}
+
+.rank {
+  width: 64rpx;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  text-align: center;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
+
+.topRank {
+  font-size: 44rpx;
+}
+
+.avatar {
+  width: 80rpx;
+  height: 80rpx;
+  border-radius: $radius-round;
+  background: $color-bg-hover;
+  flex-shrink: 0;
+  border: 2rpx solid $color-border;
+}
+
+.info {
+  flex: 1;
+  min-width: 0;
+}
+
+.nameRow {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  margin-bottom: 4rpx;
+}
+
+.name {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.meTag {
+  background: $color-primary;
+  color: $color-text-white;
+  font-size: 20rpx;
+  padding: 2rpx 12rpx;
+  border-radius: $radius-xs;
+}
+
+.team {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  @include text-ellipsis;
+}
+
+.right {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.score {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  line-height: 1.2;
+}
+
+.streak {
+  font-size: $font-size-xs;
+  color: $color-warning;
+  margin-top: 4rpx;
+}

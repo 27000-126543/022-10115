@@ -1,0 +1,286 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  padding: $spacing-lg $page-padding;
+}
+
+.sceneSelect {
+  margin-bottom: $spacing-lg;
+}
+
+.sceneCard {
+  background: linear-gradient(135deg, $color-primary-bg 0%, #FFFFFF 100%);
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  border: 2rpx solid $color-primary;
+  box-shadow: 0 4rpx 20rpx rgba(232, 93, 141, 0.15);
+  margin-bottom: $spacing-md;
+}
+
+.sceneIcon {
+  font-size: 56rpx;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.sceneName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.sceneDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.sceneSteps {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-md;
+  flex-wrap: wrap;
+}
+
+.stepDot {
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: $color-border;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  font-weight: $font-weight-semibold;
+
+  &.active {
+    background: $color-primary;
+    color: $color-text-white;
+  }
+
+  &.done {
+    background: $color-success;
+    color: $color-text-white;
+  }
+}
+
+.progressBar {
+  height: 8rpx;
+  background: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+  margin-bottom: $spacing-lg;
+}
+
+.progressFill {
+  height: 100%;
+  background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}
+
+.stepCard {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+}
+
+.stepIndex {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+  margin-bottom: $spacing-sm;
+}
+
+.sceneDescText {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  display: block;
+  margin-bottom: $spacing-md;
+  background: $color-bg-page;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+}
+
+.customerBubble {
+  background: $color-primary-bg;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+  position: relative;
+
+  &::before {
+    content: '👩';
+    position: absolute;
+    left: -16rpx;
+    top: -16rpx;
+    font-size: 32rpx;
+  }
+}
+
+.customerText {
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  font-style: italic;
+  line-height: $line-height-normal;
+  padding-left: $spacing-md;
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.optionItem {
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  border: 2rpx solid $color-border;
+  background: $color-bg-card;
+  font-size: $font-size-md;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  transition: all $transition-fast;
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &.selected {
+    border-color: $color-primary;
+    background: $color-primary-bg;
+  }
+
+  &.correct {
+    border-color: $color-success;
+    background: $color-success-bg;
+    color: $color-success;
+  }
+
+  &.wrong {
+    border-color: $color-error;
+    background: $color-error-bg;
+    color: $color-error;
+  }
+}
+
+.optionKey {
+  display: inline-block;
+  width: 40rpx;
+  height: 40rpx;
+  border-radius: $radius-round;
+  background: $color-bg-page;
+  text-align: center;
+  line-height: 40rpx;
+  margin-right: $spacing-sm;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-sm;
+}
+
+.feedbackBox {
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  background: $color-secondary-bg;
+}
+
+.feedbackScore {
+  font-size: $font-size-sm;
+  color: $color-secondary;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 8rpx;
+}
+
+.feedbackText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+}
+
+.nextBtn {
+  @include button-reset;
+  margin-top: $spacing-lg;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-primary 0%, $color-primary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+
+  &.disabled {
+    background: $color-bg-hover;
+    color: $color-text-tertiary;
+  }
+}
+
+.resultCard {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  text-align: center;
+  box-shadow: 0 8rpx 32rpx rgba(232, 93, 141, 0.15);
+  margin-bottom: $spacing-lg;
+}
+
+.resultIcon {
+  font-size: 96rpx;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.resultTitle {
+  font-size: 40rpx;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.resultScore {
+  font-size: 64rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  line-height: 1.1;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.resultTips {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  text-align: left;
+  background: $color-bg-page;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+}
+
+.restartBtn {
+  @include button-reset;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: $color-primary-bg;
+  color: $color-primary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

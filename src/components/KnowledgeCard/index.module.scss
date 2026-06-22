@@ -1,0 +1,96 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  background: linear-gradient(135deg, #FFF5F8 0%, #FFFFFF 100%);
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: 0 4rpx 20rpx rgba(232, 93, 141, 0.12);
+  border: 2rpx solid $color-border;
+  margin-bottom: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+    opacity: 0.95;
+  }
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: $spacing-md;
+}
+
+.category {
+  background: $color-primary-bg;
+  color: $color-primary;
+  padding: 8rpx 20rpx;
+  border-radius: $radius-round;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+}
+
+.time {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.title {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.content {
+  font-size: $font-size-md;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  display: block;
+  margin-bottom: $spacing-lg;
+}
+
+.keyPoints {
+  background: #FFFAFC;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+}
+
+.pointItem {
+  display: flex;
+  align-items: flex-start;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.pointDot {
+  color: $color-primary;
+  font-size: $font-size-sm;
+  margin-top: 2rpx;
+  flex-shrink: 0;
+}
+
+.pointText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.readBtn {
+  color: $color-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+}

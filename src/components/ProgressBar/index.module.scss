@@ -1,0 +1,27 @@
+@use '@/styles/variables.scss' as *;
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.track {
+  flex: 1;
+  background: $color-divider;
+  border-radius: $radius-round;
+  overflow: hidden;
+}
+
+.fill {
+  background: linear-gradient(90deg, $color-primary 0%, $color-primary-light 100%);
+  border-radius: $radius-round;
+  transition: width $transition-base;
+}
+
+.label {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  min-width: 64rpx;
+  text-align: right;
+}

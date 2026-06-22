@@ -1,0 +1,247 @@
+@use '@/styles/variables.scss' as *;
+
+.container {
+  padding: $spacing-lg $page-padding;
+}
+
+.typeTabs {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-lg;
+  overflow-x: auto;
+  padding-bottom: $spacing-sm;
+}
+
+.typeTab {
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-card;
+  border-radius: $radius-button;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  white-space: nowrap;
+  box-shadow: $shadow-card;
+  transition: all $transition-fast;
+
+  &.active {
+    background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+    color: $color-text-white;
+  }
+}
+
+.sceneList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+}
+
+.sceneCard {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  box-shadow: $shadow-card;
+  border: 2rpx solid $color-border;
+  transition: all $transition-fast;
+
+  &.active {
+    border-color: $color-secondary;
+    background: linear-gradient(135deg, $color-secondary-bg 0%, #FFFFFF 100%);
+  }
+}
+
+.sceneIcon {
+  font-size: 40rpx;
+  display: block;
+  margin-bottom: $spacing-xs;
+}
+
+.sceneTitle {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.sceneType {
+  display: inline-block;
+  background: $color-secondary-bg;
+  color: $color-secondary;
+  padding: 4rpx 16rpx;
+  border-radius: $radius-xs;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  margin-bottom: $spacing-sm;
+}
+
+.sceneBg {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-loose;
+  display: block;
+  margin-bottom: $spacing-md;
+  background: $color-bg-page;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+}
+
+.complaintContent {
+  background: $color-error-bg;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-md;
+  border-left: 6rpx solid $color-error;
+  position: relative;
+}
+
+.complaintLabel {
+  font-size: $font-size-xs;
+  color: $color-error;
+  font-weight: $font-weight-semibold;
+  margin-bottom: 8rpx;
+  display: block;
+}
+
+.complaintText {
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  font-style: italic;
+}
+
+.optionList {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-sm;
+}
+
+.optionItem {
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  border: 2rpx solid $color-border;
+  background: $color-bg-card;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  line-height: $line-height-normal;
+  transition: all $transition-fast;
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  &.selected {
+    border-color: $color-secondary;
+    background: $color-secondary-bg;
+  }
+
+  &.correct {
+    border-color: $color-success;
+    background: $color-success-bg;
+    color: $color-success;
+  }
+
+  &.wrong {
+    border-color: $color-error;
+    background: $color-error-bg;
+    color: $color-error;
+  }
+}
+
+.feedbackBox {
+  margin-top: $spacing-md;
+  padding: $spacing-md;
+  border-radius: $radius-md;
+  background: $color-secondary-bg;
+}
+
+.feedbackTitle {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-secondary;
+  margin-bottom: 8rpx;
+}
+
+.feedbackText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.feedbackTip {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  line-height: $line-height-normal;
+  display: block;
+  padding-top: $spacing-xs;
+  border-top: 2rpx solid $color-divider;
+}
+
+.nextBtn {
+  @include button-reset;
+  margin-top: $spacing-md;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: linear-gradient(135deg, $color-secondary 0%, $color-secondary-light 100%);
+  color: $color-text-white;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+
+  &.disabled {
+    background: $color-bg-hover;
+    color: $color-text-tertiary;
+  }
+}
+
+.completedCard {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xl;
+  text-align: center;
+  box-shadow: 0 8rpx 32rpx rgba(124, 92, 255, 0.15);
+}
+
+.completedIcon {
+  font-size: 96rpx;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.completedTitle {
+  font-size: 36rpx;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 8rpx;
+}
+
+.completedDesc {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: $line-height-normal;
+  display: block;
+  margin-bottom: $spacing-lg;
+}
+
+.restartBtn {
+  @include button-reset;
+  height: $button-height-md;
+  border-radius: $radius-button;
+  background: $color-secondary-bg;
+  color: $color-secondary;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  transition: all $transition-base;
+
+  &:active {
+    opacity: 0.9;
+    transform: scale(0.98);
+  }
+}

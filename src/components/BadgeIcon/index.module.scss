@@ -1,0 +1,73 @@
+@use '@/styles/variables.scss' as *;
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: $spacing-xs;
+}
+
+.iconBox {
+  border-radius: $radius-round;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, $color-gold-bg 0%, #FFF3CD 100%);
+  border: 4rpx solid $color-gold;
+  box-shadow: 0 4rpx 12rpx rgba(255, 179, 0, 0.25);
+}
+
+.icon {
+  line-height: 1;
+}
+
+.name {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  text-align: center;
+  @include text-ellipsis;
+  max-width: 120rpx;
+}
+
+.small {
+  .iconBox {
+    width: 64rpx;
+    height: 64rpx;
+  }
+  .icon {
+    font-size: 32rpx;
+  }
+}
+
+.medium {
+  .iconBox {
+    width: 96rpx;
+    height: 96rpx;
+  }
+  .icon {
+    font-size: 48rpx;
+  }
+}
+
+.large {
+  .iconBox {
+    width: 128rpx;
+    height: 128rpx;
+  }
+  .icon {
+    font-size: 64rpx;
+  }
+}
+
+.locked {
+  .iconBox {
+    background: $color-bg-hover;
+    border-color: $color-border;
+    box-shadow: none;
+    filter: grayscale(1);
+    opacity: 0.5;
+  }
+  .name {
+    color: $color-text-tertiary;
+  }
+}

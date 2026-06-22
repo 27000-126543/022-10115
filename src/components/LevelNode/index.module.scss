@@ -1,0 +1,113 @@
+@use '@/styles/variables.scss' as *;
+
+.node {
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  text-align: center;
+  box-shadow: 0 4rpx 16rpx rgba(232, 93, 141, 0.1);
+  border: 2rpx solid transparent;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.97);
+  }
+}
+
+.completed {
+  background: linear-gradient(135deg, #E6FFFB 0%, $color-success-bg 100%);
+  border-color: $color-success;
+}
+
+.locked {
+  opacity: 0.6;
+  background: $color-bg-hover;
+}
+
+.iconBox {
+  width: 96rpx;
+  height: 96rpx;
+  margin: 0 auto $spacing-sm;
+  border-radius: $radius-round;
+  background: linear-gradient(135deg, $color-primary-bg 0%, #FFE4ED 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.completed .iconBox {
+  background: linear-gradient(135deg, $color-success-bg 0%, #CCFBF1 100%);
+}
+
+.icon {
+  font-size: 48rpx;
+}
+
+.checkBadge {
+  position: absolute;
+  right: -8rpx;
+  bottom: -8rpx;
+  width: 36rpx;
+  height: 36rpx;
+  border-radius: $radius-round;
+  background: $color-success;
+  color: $color-text-white;
+  font-size: 22rpx;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2rpx 8rpx rgba(54, 207, 201, 0.4);
+}
+
+.lockOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  border-radius: $radius-round;
+  background: rgba(0, 0, 0, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lockIcon {
+  font-size: 36rpx;
+}
+
+.name {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: 4rpx;
+}
+
+.category {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+  display: block;
+  margin-bottom: $spacing-sm;
+}
+
+.progressWrap {
+  margin-top: $spacing-sm;
+}
+
+.reward {
+  display: block;
+  margin-top: 8rpx;
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-medium;
+}
+
+.fullScore {
+  margin-top: $spacing-sm;
+  font-size: $font-size-xs;
+  color: $color-success;
+  font-weight: $font-weight-semibold;
+}

@@ -1,0 +1,95 @@
+@use '@/styles/variables.scss' as *;
+
+.card {
+  display: flex;
+  align-items: center;
+  background: $color-bg-card;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-card;
+  margin-bottom: $spacing-md;
+  gap: $spacing-md;
+  transition: all $transition-base;
+
+  &:active {
+    transform: scale(0.99);
+  }
+}
+
+.completed {
+  opacity: 0.7;
+  background: $color-divider;
+}
+
+.iconBox {
+  width: 88rpx;
+  height: 88rpx;
+  border-radius: $radius-md;
+  background: $color-primary-bg;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.icon {
+  font-size: 44rpx;
+}
+
+.content {
+  flex: 1;
+  min-width: 0;
+}
+
+.titleRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8rpx;
+}
+
+.title {
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.doneTag {
+  background: $color-success-bg;
+  color: $color-success;
+  font-size: $font-size-xs;
+  padding: 4rpx 12rpx;
+  border-radius: $radius-round;
+  font-weight: $font-weight-medium;
+}
+
+.desc {
+  font-size: $font-size-sm;
+  color: $color-text-tertiary;
+  display: block;
+  margin-bottom: $spacing-sm;
+  @include text-ellipsis;
+}
+
+.meta {
+  display: flex;
+  align-items: center;
+  gap: $spacing-lg;
+}
+
+.time {
+  font-size: $font-size-xs;
+  color: $color-text-tertiary;
+}
+
+.points {
+  font-size: $font-size-xs;
+  color: $color-primary;
+  font-weight: $font-weight-semibold;
+}
+
+.arrow {
+  font-size: 40rpx;
+  color: $color-text-tertiary;
+  flex-shrink: 0;
+}
