@@ -12,6 +12,7 @@ export interface LevelProgress {
   answeredIds: string[];
   correctCount: number;
   completed: boolean;
+  finishedAll: boolean;
 }
 
 interface PersistedState {
@@ -48,6 +49,7 @@ interface AppState {
   getLevelProgress: (levelId: string) => LevelProgress;
   getCategoryCount: (category: string) => number;
   resetWrongQuestions: () => void;
+  resetLevelProgress: (levelId: string) => void;
 }
 
 const AppContext = createContext<AppState | null>(null);
@@ -184,7 +186,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       levelProgress[levelId] || {
         answeredIds: [],
         correctCount: 0,
-        completed: false
+        completed: false,
+        finishedAll: false
       }
     );
   };
@@ -199,6 +202,14 @@ export function AppProvider({ children }: { children: ReactNode }) {
   const resetWrongQuestions = () => {
     setWrongQuestionIds([]);
     setCategoryCounts(prev => ({ ...prev, __wrong__: 0 }));
+  };
+
+  const resetLevelProgress = (levelId: string) => {
+    setLevelProgress(prev => {
+      const next = { ...prev };
+      delete next[levelId];
+      return next;
+    });
   };
 
   const recordAnswer: AppState['recordAnswer'] = ({
@@ -216,6 +227,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
       );
     }
 
+    // categoryCounts: 每答一题必加，用于今日任务配额判断（不受关卡历史记录影响）
     setCategoryCounts(prev => {
       const next = { ...prev };
       next[category] = (next[category] || 0) + 1;
@@ -241,29 +253,53 @@ export function AppProvider({ children }: { children: ReactNode }) {
       return next;
     });
 
-    if (isCorrect && questionScore > 0) {
-      addScore(questionScore);
-    }
-
     if (levelId) {
       let levelCompleted = false;
+      let isNewQuestion = false;
       setLevelProgress(prev => {
-        const cur: LevelProgress = prev[levelId] || { answeredIds: [], correctCount: 0, completed: false };
-        if (cur.answeredIds.includes(questionId)) return prev;
+        const cur: LevelProgress = prev[levelId] || {
+          answeredIds: [], correctCount: 0, completed: false, finishedAll: false
+        };
+        // 如果该题之前已答过（且正确率已达通关条件），就不再重复记录，避免重复给通关奖励
+        if (cur.completed && cur.answeredIds.includes(questionId)) {
+          return prev;
+        }
+        if (!cur.answeredIds.includes(questionId)) {
+          isNewQuestion = true;
+        }
         const next: LevelProgress = {
-          answeredIds: [...cur.answeredIds, questionId],
-          correctCount: cur.correctCount + (isCorrect ? 1 : 0),
-          completed: cur.completed
+          answeredIds: isNewQuestion
+            ? [...cur.answeredIds, questionId]
+            : cur.answeredIds,
+          correctCount: isNewQuestion
+            ? cur.correctCount + (isCorrect ? 1 : 0)
+            : cur.correctCount,
+          completed: cur.completed,
+          finishedAll: cur.finishedAll
         };
         const level = levels.find(l => l.id === levelId);
         if (level && next.answeredIds.length >= level.totalQuestions) {
-          next.completed = true;
-          levelCompleted = true;
+          next.finishedAll = true;
+          const acc = next.correctCount / level.totalQuestions;
+          if (!next.completed && acc >= 0.6) {
+            next.completed = true;
+            levelCompleted = true;
+          }
         }
         return { ...prev, [levelId]: next };
       });
+
+      // 新题给单题积分
+      if (isNewQuestion && isCorrect && questionScore > 0) {
+        addScore(questionScore);
+      }
+      // 真正通关给通关奖励
       if (levelCompleted) {
-        result.levelCompleted = true;
+        const level = levels.find(l => l.id === levelId);
+        if (level) {
+          addScore(level.rewardPoints);
+          result.levelCompleted = true;
+        }
       }
     }
 
@@ -287,7 +323,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
       recordAnswer,
       getLevelProgress,
       getCategoryCount,
-      resetWrongQuestions
+      resetWrongQuestions,
+      resetLevelProgress
     }}>
       {children}
     </AppContext.Provider>

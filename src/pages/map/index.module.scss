@@ -298,3 +298,39 @@
   color: $color-primary;
   border: 2rpx solid $color-primary-light;
 }
+
+.hintBox {
+  background: #FFF5E1;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  border-left: 6rpx solid #FF8A65;
+}
+
+.hintBoxSuccess {
+  background: #E6F7EA;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  margin-bottom: $spacing-md;
+  border-left: 6rpx solid #4CAF50;
+}
+
+.hintTitle {
+  font-weight: $font-weight-semibold;
+  display: block;
+  margin-bottom: 4rpx;
+  font-size: $font-size-sm;
+}
+
+.hintText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.5;
+}
+
+.resultStatusLine {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  display: block;
+  margin-bottom: $spacing-lg;
+}

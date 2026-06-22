@@ -31,7 +31,8 @@ export default function MapPage() {
     addScore,
     wrongQuestionIds,
     completeTaskByType,
-    levelProgress: contextLevelProgress
+    levelProgress: contextLevelProgress,
+    resetLevelProgress
   } = useApp();
 
   const [activeCategory, setActiveCategory] = useState<string>(() => {
@@ -50,11 +51,12 @@ export default function MapPage() {
   const pendingNextRef = useRef(false);
 
   const resolvedLevelProgress = useMemo(() => {
-    const map: Record<string, { completed: boolean; answeredCount: number; correctCount: number }> = {};
+    const map: Record<string, { completed: boolean; finishedAll: boolean; answeredCount: number; correctCount: number }> = {};
     levels.forEach(l => {
       const p = getLevelProgress(l.id);
       map[l.id] = {
-        completed: l.completed || p.completed,
+        completed: p.completed,
+        finishedAll: p.finishedAll,
         answeredCount: p.answeredIds.length,
         correctCount: p.correctCount
       };
@@ -220,6 +222,11 @@ export default function MapPage() {
       setCurrentQIdx(0);
       setWrongAnsweredCount(0);
     } else if (selectedLevel) {
+      // 未通关的关卡重练时重置进度，让正确率重新计算
+      const lp = resolvedLevelProgress[selectedLevel.id];
+      if (lp && !lp.completed && lp.finishedAll) {
+        resetLevelProgress(selectedLevel.id);
+      }
       setCurrentQIdx(0);
     }
     setSessionAnswered(0);
@@ -230,7 +237,17 @@ export default function MapPage() {
 
   useDidShow(() => {
     if (router.params?.category) {
-      setActiveCategory(router.params.category as string);
+      const cat = router.params.category as string;
+      setActiveCategory(cat);
+      // 从今日任务进预约规则小测验时，自动选中该分类的第一个关卡
+      if (cat === 'booking') {
+        const firstLevel = levels.find(l => l.category === '预约规则');
+        if (firstLevel) {
+          setSelectedLevelId(firstLevel.id);
+          setWrongReviewMode(false);
+          setMode('level-detail');
+        }
+      }
     }
     if (router.params?.mode === 'wrongReview') {
       setWrongReviewMode(true);
@@ -284,7 +301,10 @@ export default function MapPage() {
     const total = levelQuestions.length;
     const lp = resolvedLevelProgress[selectedLevel.id];
     const answered = lp?.answeredCount || 0;
-    const isComplete = lp?.completed || false;
+    const correct = lp?.correctCount || 0;
+    const isCompleted = lp?.completed || false;
+    const isFinishedAll = lp?.finishedAll || false;
+    const curAcc = answered > 0 ? Math.round((correct / Math.max(answered, 1)) * 100) : 0;
     const pct = total > 0 ? Math.min(100, (answered / total) * 100) : 0;
     return (
       <ScrollView scrollY>
@@ -306,22 +326,57 @@ export default function MapPage() {
             <View style={{ margin: '24rpx 0' }}>
               <Text style={{ fontSize: '26rpx', color: '#666', display: 'block', marginBottom: '12rpx' }}>
                 关卡进度 {answered}/{total}
+                {answered > 0 && ` · 当前正确率 ${curAcc}%（通关需≥60%）`}
               </Text>
               <ProgressBar percent={pct} height={16} color="#7B5CFF" bgColor="#EEE6FF" />
             </View>
+            {isFinishedAll && !isCompleted && (
+              <View className={styles.hintBox}>
+                <Text className={styles.hintTitle}>⚠️ 正确率未达标</Text>
+                <Text className={styles.hintText}>
+                  目前正确率 {curAcc}%，未达到通关要求（≥60%）。
+                  本关已完成训练但暂未通关，点击「🔁 重刷正确率」可再次答题重算正确率，达标后即算正式通关。
+                </Text>
+              </View>
+            )}
+            {isCompleted && (
+              <View className={styles.hintBoxSuccess}>
+                <Text className={styles.hintTitle}>✅ 已正式通关</Text>
+                <Text className={styles.hintText}>
+                  正确率 {curAcc}% 已达标，已获得通关奖励 {selectedLevel.rewardPoints} 积分。
+                  可以再练一次加深印象，但不再重复发放通关奖励。
+                </Text>
+              </View>
+            )}
             <View className={styles.levelDescBox}>
               <Text className={styles.levelDescTitle}>📝 关卡说明</Text>
               <Text className={styles.levelDescText}>
                 本关为「{selectedLevel.category}」专项训练，共 {total} 道题。
-                完成全部题目后即可通关并获得 {selectedLevel.rewardPoints} 积分奖励。
-                答错的题目会自动加入错题本，用于后续复盘复习。
+                <Text style={{ fontWeight: 600 }}>答完所有题且正确率≥60%即可正式通关</Text>
+                并获得 {selectedLevel.rewardPoints} 积分奖励。答错的题目会自动加入错题本。
               </Text>
             </View>
             <View
               className={styles.startBtn}
-              onClick={isComplete ? handleContinueLevel : handleStartQuiz}
+              onClick={() => {
+                if (isCompleted) {
+                  handleContinueLevel();
+                } else if (isFinishedAll) {
+                  handleContinueLevel(); // 会重置进度并重算正确率
+                } else if (answered > 0) {
+                  handleStartQuiz();
+                } else {
+                  handleStartQuiz();
+                }
+              }}
             >
-              {isComplete ? '🔁 再练一次' : answered > 0 ? '▶ 继续答题' : '▶ 开始答题'}
+              {isCompleted
+                ? '🔁 再练一次'
+                : isFinishedAll
+                  ? '🔁 重刷正确率'
+                  : answered > 0
+                    ? '▶ 继续答题'
+                    : '▶ 开始答题'}
             </View>
           </View>
         </View>
@@ -369,16 +424,47 @@ export default function MapPage() {
   // ========== RENDER: Result ==========
   if (mode === 'result') {
     const total = activeQuestions.length;
-    const correct = wrongReviewMode ? sessionCorrect : (selectedLevel ? (resolvedLevelProgress[selectedLevel.id]?.correctCount || sessionCorrect) : sessionCorrect);
-    const acc = total > 0 ? Math.round((correct / total) * 100) : 0;
+    let correct = sessionCorrect;
+    let acc = total > 0 ? Math.round((correct / total) * 100) : 0;
+    let levelCompleted = false;
+    let finishedAll = false;
+
+    if (wrongReviewMode) {
+      levelCompleted = wrongAnsweredCount >= REVIEW_QUOTA;
+      finishedAll = levelCompleted;
+    } else if (selectedLevel) {
+      const lp = resolvedLevelProgress[selectedLevel.id];
+      if (lp) {
+        correct = lp.correctCount;
+        acc = total > 0 ? Math.round((correct / total) * 100) : 0;
+        levelCompleted = lp.completed;
+        finishedAll = lp.finishedAll;
+      }
+    }
     const passed = acc >= 60;
-    const levelCompleted = wrongReviewMode
-      ? wrongAnsweredCount >= REVIEW_QUOTA
-      : (selectedLevel ? resolvedLevelProgress[selectedLevel.id]?.completed || false : false);
-    const icon = levelCompleted ? (passed ? '🏆' : '📊') : '⏸';
-    const title = wrongReviewMode
-      ? (levelCompleted ? '复习完成！' : '复习中断')
-      : (levelCompleted ? (passed ? '恭喜通关！' : '本关已完成') : '答题中断');
+
+    let icon = '⏸';
+    let title = '答题中断';
+    let statusLine = '';
+    if (wrongReviewMode) {
+      icon = finishedAll ? '📚' : '⏸';
+      title = finishedAll ? '复习完成！' : '复习中断';
+    } else {
+      if (levelCompleted) {
+        icon = '🏆';
+        title = '恭喜通关！';
+        statusLine = '已计入地图已通关数量';
+      } else if (finishedAll) {
+        icon = '📚';
+        title = '训练已完成';
+        statusLine = `正确率 ${acc}% 未达通关标准（≥60%），可重刷正确率`;
+      } else {
+        icon = '⏸';
+        title = '答题中断';
+        statusLine = '尚未完成本关全部题目，可继续答题';
+      }
+    }
+
     return (
       <ScrollView scrollY>
         <View style={{ padding: '32rpx' }}>
@@ -388,6 +474,9 @@ export default function MapPage() {
           <View className={styles.resultCard}>
             <Text className={styles.resultIcon}>{icon}</Text>
             <Text className={styles.resultTitle}>{title}</Text>
+            {statusLine && (
+              <Text className={styles.resultStatusLine}>{statusLine}</Text>
+            )}
             <View className={styles.resultStats}>
               <View className={styles.resultStat}>
                 <Text className={styles.resultStatNum}>{acc}%</Text>
@@ -408,6 +497,15 @@ export default function MapPage() {
                 <Text>+{selectedLevel.rewardPoints} 积分</Text>
               </View>
             )}
+            {!wrongReviewMode && finishedAll && !levelCompleted && selectedLevel && (
+              <View className={styles.hintBox}>
+                <Text className={styles.hintTitle}>⚠️ 暂未通关</Text>
+                <Text className={styles.hintText}>
+                  已完成本关训练，但正确率 {acc}% 未达≥60%的通关要求。
+                  可重刷正确率，达标后将自动通关并获得 {selectedLevel.rewardPoints} 积分通关奖励。
+                </Text>
+              </View>
+            )}
             {wrongReviewMode && levelCompleted && (
               <View className={styles.rewardBox}>
                 <Text style={{ fontWeight: 600 }}>🎉 今日任务</Text>
@@ -415,7 +513,12 @@ export default function MapPage() {
               </View>
             )}
             <View style={{ display: 'flex', gap: '20rpx', marginTop: '32rpx' }}>
-              <View className={styles.secondaryBtn} onClick={handleContinueLevel}>🔁 再练一次</View>
+              <View
+                className={styles.secondaryBtn}
+                onClick={handleContinueLevel}
+              >
+                {levelCompleted ? '🔁 再练一次' : wrongReviewMode ? '🔁 再练一次' : '🔁 重刷正确率'}
+              </View>
               <View className={styles.primaryBtn} onClick={handleBackToMap}>🗺 返回地图</View>
             </View>
           </View>
