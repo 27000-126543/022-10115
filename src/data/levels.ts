@@ -54,7 +54,7 @@ export const levels: Level[] = [
     name: '回访时间达人',
     category: '术后回访',
     icon: '⏰',
-    unlocked: false,
+    unlocked: true,
     completed: false,
     progress: 0,
     totalQuestions: 6,
@@ -116,5 +116,6 @@ export const levelCategories = [
   { id: 'service', name: '服务流程', icon: '💁' },
   { id: 'booking', name: '预约规则', icon: '📅' },
   { id: 'complaint', name: '投诉应对', icon: '💬' },
-  { id: 'privacy', name: '隐私保护', icon: '🔒' }
+  { id: 'privacy', name: '隐私保护', icon: '🔒' },
+  { id: 'postop', name: '术后回访', icon: '⏰' }
 ];

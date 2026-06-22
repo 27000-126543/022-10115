@@ -130,3 +130,171 @@
 .contentBottom {
   height: 48rpx;
 }
+
+.backLink {
+  font-size: $font-size-sm;
+  color: $color-primary;
+  margin-bottom: $spacing-lg;
+  display: inline-block;
+}
+
+.levelDetailCard {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xxl $spacing-xl;
+  text-align: center;
+  box-shadow: $shadow-card;
+}
+
+.levelDetailIcon {
+  font-size: 96rpx;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.levelDetailName {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.levelDetailMeta {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-lg;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  margin-bottom: $spacing-lg;
+}
+
+.levelDetailReward {
+  display: flex;
+  justify-content: center;
+  gap: $spacing-xl;
+  padding: $spacing-md 0;
+  border-top: 2rpx dashed $color-border;
+  border-bottom: 2rpx dashed $color-border;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  margin-bottom: $spacing-md;
+}
+
+.levelDescBox {
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  text-align: left;
+  margin-bottom: $spacing-xl;
+}
+
+.levelDescTitle {
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xs;
+  font-size: $font-size-sm;
+}
+
+.levelDescText {
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  line-height: 1.6;
+}
+
+.startBtn {
+  display: inline-block;
+  padding: $spacing-md $spacing-xxl;
+  background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+  color: $color-text-white;
+  border-radius: $radius-button;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-base;
+  box-shadow: 0 8rpx 24rpx rgba(124, 92, 255, 0.25);
+
+  &.disabled {
+    background: linear-gradient(135deg, #8B7CD9 0%, #a392ff 100%);
+  }
+}
+
+.resultCard {
+  background: $color-bg-card;
+  border-radius: $radius-xl;
+  padding: $spacing-xxl $spacing-xl;
+  text-align: center;
+  box-shadow: $shadow-card;
+}
+
+.resultIcon {
+  font-size: 120rpx;
+  display: block;
+  margin-bottom: $spacing-md;
+}
+
+.resultTitle {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  display: block;
+  margin-bottom: $spacing-xl;
+}
+
+.resultStats {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: $spacing-xl;
+}
+
+.resultStat {
+  flex: 1;
+  text-align: center;
+  padding: $spacing-md 0;
+  background: $color-bg-page;
+  border-radius: $radius-md;
+  margin: 0 $spacing-xs;
+}
+
+.resultStatNum {
+  font-size: 44rpx;
+  font-weight: $font-weight-bold;
+  color: $color-primary;
+  display: block;
+}
+
+.resultStatLabel {
+  font-size: $font-size-xs;
+  color: $color-text-secondary;
+  margin-top: 4rpx;
+}
+
+.rewardBox {
+  background: linear-gradient(135deg, #FFF5E1 0%, #FFE8B8 100%);
+  border-radius: $radius-md;
+  padding: $spacing-md;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #8A5A00;
+}
+
+.primaryBtn, .secondaryBtn {
+  flex: 1;
+  padding: $spacing-md;
+  border-radius: $radius-button;
+  text-align: center;
+  font-weight: $font-weight-semibold;
+  font-size: $font-size-base;
+}
+
+.primaryBtn {
+  background: linear-gradient(135deg, $color-primary 0%, $color-secondary 100%);
+  color: $color-text-white;
+  box-shadow: 0 8rpx 24rpx rgba(124, 92, 255, 0.25);
+}
+
+.secondaryBtn {
+  background: $color-bg-page;
+  color: $color-primary;
+  border: 2rpx solid $color-primary-light;
+}

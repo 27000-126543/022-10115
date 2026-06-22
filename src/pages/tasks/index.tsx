@@ -44,6 +44,10 @@ export default function TasksPage() {
       Taro.navigateTo({ url: '/pages/reception/index' });
     } else if (task.type === 'complaint') {
       Taro.navigateTo({ url: '/pages/complaint/index' });
+    } else if (task.type === 'quiz') {
+      Taro.navigateTo({ url: '/pages/map/index?category=booking' });
+    } else if (task.type === 'review') {
+      Taro.navigateTo({ url: '/pages/map/index?mode=wrongReview' });
     } else {
       completeTaskByType(task.type);
       Taro.showToast({
